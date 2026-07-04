@@ -1,0 +1,73 @@
+services:
+  # --- CPU Profile ---
+  reachy-mini-cpu:
+    container_name: reachy-mini-cpu
+    profiles: ["cpu"]
+    privileged: true
+    build:
+      context: .
+      dockerfile: .ci/Dockerfile
+      secrets:
+        - hf_token
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        CMAKE_ARGS: "-DGGML_BLAS=ON -DGGML_BLAS_VENDOR=OpenBLAS"
+    image: aixhrisummerschool2026/aixhri-summer-school-2026:Tutorial_02_Chat_with_your_robot_cpu
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=/run/user/${UID:-1000}
+      - PULSE_SERVER=unix:/run/user/${UID:-1000}/pulse/native
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./tests:/app/tests
+      - ./lab:/app/lab
+      - /run/udev:/run/udev
+      - /run/user/${UID:-1000}/pulse:/run/user/${UID:-1000}/pulse
+      - /run/user/${UID:-1000}/pipewire-0:/run/user/${UID:-1000}/pipewire-0
+      - /dev:/dev
+    stdin_open: true
+    tty: true
+
+  # --- GPU Profile ---
+  reachy-mini-gpu:
+    container_name: reachy-mini-gpu
+    profiles: ["gpu"]
+    privileged: true
+    build:
+      context: .
+      dockerfile: .ci/Dockerfile
+      secrets:
+        - hf_token
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        CMAKE_ARGS: "-DGGML_CUDA=on"
+    image: aixhrisummerschool2026/aixhri-summer-school-2026:Tutorial_02_Chat_with_your_robot_gpu
+    network_mode: "host"
+    environment:
+      - DISPLAY=${DISPLAY}
+      - XDG_RUNTIME_DIR=/run/user/${UID:-1000}
+      - PULSE_SERVER=unix:/run/user/${UID:-1000}/pulse/native
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./tests:/app/tests
+      - ./lab:/app/lab
+      - /run/udev:/run/udev
+      - /run/user/${UID:-1000}/pulse:/run/user/${UID:-1000}/pulse
+      - /run/user/${UID:-1000}/pipewire-0:/run/user/${UID:-1000}/pipewire-0
+      - /dev:/dev
+    stdin_open: true
+    tty: true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+secrets:
+  hf_token:
+    environment: "HF_TOKEN"
