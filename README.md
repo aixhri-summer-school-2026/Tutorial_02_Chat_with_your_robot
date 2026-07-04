@@ -10,6 +10,15 @@ Using VLMs to interact with an expressive Reachy Mini robot (AIxHRI Summer Schoo
 
 ## Setup
 
+If you want to do the first part on your own in one of our two available machines.
+tic.local or tac.local. You will first need to ssh into that machine with this specific command:
+
+```bash
+ssh -L 80XX:localhost:80XX userXX@remote-machine-ip
+```
+Where `XX` is your user number (e.g., `ssh -L 8010:localhost:8010 user10@remote-machine-ip`).
+
+
 Clone the repository:
 
 ```bash
@@ -17,19 +26,16 @@ git clone git@github.com:aixhri-summer-school-2026/Tutorial_02_Chat_with_your_ro
 cd Tutorial_02_Chat_with_your_robot
 
 ```
-
-Install udev rules (USB + camera symlink):
+Checkout to the ssh_mode branch:
 
 ```bash
-sudo bash scripts/usb_permissions.sh
-sudo bash scripts/camera_rules.sh
+git checkout ssh_mode
 ```
-
-If group permissions were updated, log out and log back in once.
 
 ## Container Registry (Pulling Images)
 
-To save time during the practical exercises, you will not build the environments locally. Pre-built images are pulled directly from the official container registry.
+Normally this step is not needed but better to be sure you have the latest images. You can pull the latest images from the official container registry using the following commands:
+
 
 ```bash
 # For machines with an NVIDIA GPU
@@ -54,34 +60,10 @@ make module1-gpu   # (or make module1-cpu)
 
 ```
 
-*Look at the terminal output for the `http://127.0.0.1:8888...` link and open it in your browser to access `first_module.ipynb`.*
+*Look at the terminal output for the `http://127.0.0.1:88XX...` link and open it in your browser to access `first_module.ipynb`.*
 
 ### Phase 2: The Final Assignment (Hardware Deployment)
-
-Once you have completed Module 1, you will use those skills to build a real-time reactive streaming loop with Reachy Mini.
-
-```bash
-# Launch the interactive terminal
-make assignment-gpu  # (or make assignment-cpu)
-```
-
-*This will start the Reachy daemon in the background and drop you directly into the `/app/lab` folder. Edit `assignment.py` in your preferred IDE, and run it here using `python lab/assignment.py`.*
-
-## Utilities
-
-Stream logs:
-
-```bash
-make logs-gpu  # (or make logs-cpu)
-
-```
-
-Stop everything and clean up:
-
-```bash
-make down
-
-```
+Unfortunately this part is not possible remotely. You will need to collaborate with someone else that has a local working setup!
 
 ---
 
