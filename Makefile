@@ -1,5 +1,8 @@
 .PHONY: build-cpu build-gpu module1-cpu module1-gpu assignment-cpu assignment-gpu down install-rules logs-cpu logs-gpu
 
+USER_NUM := $(shell whoami | sed 's/user//')
+PORT := 80$(USER_NUM)
+
 export UID := $(shell id -u)
 export GID := $(shell id -g)
 
@@ -12,17 +15,20 @@ build-gpu:
 
 # --- MODULE 1: Jupyter Lab (first_module.ipynb) ---
 module1-cpu:
-	docker compose --profile cpu run --rm reachy-mini-cpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
+	docker compose --profile cpu run --rm -p $(PORT):8888 --name reachy-$(USER) \
+	reachy-mini-cpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
+	--notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
 
 module1-gpu:
-	docker compose --profile gpu run --rm reachy-mini-gpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
+	docker compose --profile gpu run --rm -p $(PORT):8888 --name reachy-$(USER) \
+	reachy-mini-gpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
+	--notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
 
 # --- ASSIGNMENT: Interactive Terminal (assignment.py) ---
 assignment-cpu:
-	docker compose --profile cpu run --rm -it reachy-mini-cpu /bin/bash -c "reachy-mini-daemon & cd /app/lab && /bin/bash"
-
+	@echo "This assignment can only be done locally you should collaborate with someone else."
 assignment-gpu:
-	docker compose --profile gpu run --rm -it reachy-mini-gpu /bin/bash -c "reachy-mini-daemon & cd /app/lab && /bin/bash"
+	@echo "This assignment can only be done locally you should collaborate with someone else."
 
 down:
 	docker compose --profile cpu --profile gpu down
