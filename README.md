@@ -2,9 +2,9 @@
 
 Using VLMs to interact with an expressive Reachy Mini robot (AIxHRI Summer School 2026).
 
-If you are among the people that don't have Nvidia gpu:
-- You can follow the tutorial on a cpu-only machine.
-If you don't have ubuntu, you can checkout on the `ssh_mode` branch, and follow the instructions to run the tutorian on a remote server, note that only the first module will be available in this case, as the second module requires a local Reachy Mini connection.
+If you are among the people who don't have an Nvidia GPU:
+- You can follow the tutorial on a CPU-only machine.
+If you don't have Ubuntu, you can check out the `ssh_mode` branch and follow the instructions to run the tutorial on a remote server; note that only the first module will be available in this case, as the second module requires a local Reachy Mini connection.
 
 ## Prerequisites
 
