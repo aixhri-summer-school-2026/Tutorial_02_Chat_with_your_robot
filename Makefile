@@ -15,13 +15,13 @@ build-gpu:
 
 # --- MODULE 1: Jupyter Lab (first_module.ipynb) ---
 module1-cpu:
-	docker compose --profile cpu run --rm -p $(PORT):8888 --name reachy-$(USER) \
-	reachy-mini-cpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
+	docker compose --profile cpu run --rm -p $(PORT):$(PORT) --name reachy-$(USER) \
+	reachy-mini-cpu jupyter lab --ip=0.0.0.0 --port=$(PORT) --no-browser \
 	--notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
 
 module1-gpu:
-	docker compose --profile gpu run --rm -p $(PORT):8888 --name reachy-$(USER) \
-	reachy-mini-gpu jupyter lab --ip=0.0.0.0 --port=8888 --no-browser \
+	docker compose --profile gpu run --rm -p $(PORT):$(PORT) --name reachy-$(USER) \
+	reachy-mini-gpu jupyter lab --ip=0.0.0.0 --port=$(PORT) --no-browser \
 	--notebook-dir=/app/lab --ServerApp.token='' --ServerApp.password='' --ServerApp.allow_root=True
 
 # --- ASSIGNMENT: Interactive Terminal (assignment.py) ---
